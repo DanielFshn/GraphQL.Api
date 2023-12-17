@@ -14,14 +14,21 @@ builder.Services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseSqlServer
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .AddSubscriptionType<Subscription>()
     .AddType<PlatformType>()
     .AddType<CommandType>()
-    .AddProjections();
+    .AddSorting()
+    .AddFiltering()
+    .AddProjections()
+    .AddInMemorySubscriptions();
 
 
 var app = builder.Build();
 
 app.UseRouting();
+
+app.UseWebSockets();
 
 app.UseEndpoints(endpoints => endpoints.MapGraphQL());
 
